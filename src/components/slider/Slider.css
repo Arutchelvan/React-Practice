@@ -94,4 +94,26 @@ section .container {
   button.next {
     right: 0px;
   }
+  .sliderDots ul {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+  }
+  .sliderDots ul li {
+    line-height: 0;
+    font-size: 0;
+    width: 18px;
+    height: 18px;
+    background-color: #999;
+    margin: 0 20px;
+    list-style: none;
+    border-radius: 50px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    padding: 0;
+  }
+  .sliderDots ul li.active {
+    border: 2px solid #000;
+  }
 }
