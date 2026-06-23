@@ -1,10 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Slider.css";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 
 export default function Slider() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [slides, setSlides] = useState([]);
 
+  useEffect(() => {
+    async function getImages() {
+      try {
+        const res = await fetch(
+          "https://jsonplaceholder.typicode.com/photos?_limit=10",
+        );
+        const data = await res.json();
+        console.log(data);
+        setSlides(data);
+      } catch (error) {
+        console.log("Error in fetching data", error);
+      }
+    }
+
+    getImages();
+  }, []);
   return (
     <section className="sliderSec">
       <div className="container">
@@ -24,61 +41,47 @@ export default function Slider() {
             className="sliderContainer"
             style={{ transform: `translateX(calc(100% * ${-currentSlide}))` }}
           >
-            <div className="sliderItem">
-              <img src="https://cdn.pixabay.com/photo/2015/12/01/20/28/forest-1072828_1280.jpg" />
-              <div className="sliderContent">
-                <h4>Slider Title 1</h4>
-                <p>Slider Description 1</p>
-              </div>
-            </div>
-            <div className="sliderItem">
-              <img src="https://cdn.pixabay.com/photo/2016/11/29/09/32/concept-1868728_1280.jpg" />
-              <div className="sliderContent">
-                <h4>Slider Title 2</h4>
-                <p>Slider Description 2</p>
-              </div>
-            </div>
-            <div className="sliderItem">
-              <img src="https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849825_1280.jpg" />
-              <div className="sliderContent">
-                <h4>Slider Title 3</h4>
-                <p>Slider Description 3</p>
-              </div>
-            </div>
-            <div className="sliderItem">
-              <img src="https://cdn.pixabay.com/photo/2016/03/27/22/22/fox-1284512_1280.jpg" />
-              <div className="sliderContent">
-                <h4>Slider Title 4</h4>
-                <p>Slider Description 4</p>
-              </div>
-            </div>
+            {slides.map((slide) => {
+              const id = slide.id - 1;
+              return (
+                <div className="sliderItem" key={id}>
+                  <img
+                    src="https://fastly.picsum.photos/id/13/2500/1667.jpg?hmac=SoX9UoHhN8HyklRA4A3vcCWJMVtiBXUg0W4ljWTor7s"
+                    alt={slide.title}
+                  />
+                  {/* <img src={slide.url} alt={slide.title} /> */}
+                  <div className="sliderContent">
+                    <p>{id + 1}</p>
+                    <h4>{slide.title}</h4>
+                  </div>
+                </div>
+              );
+            })}
           </div>
           <div className="sliderDots">
             <ul>
-              <li
-                className={currentSlide == 0 ? "active" : ""}
-                onClick={() => setCurrentSlide(0)}
-              ></li>
-              <li
-                className={currentSlide == 1 ? "active" : ""}
-                onClick={() => setCurrentSlide(1)}
-              ></li>
-              <li
-                className={currentSlide == 2 ? "active" : ""}
-                onClick={() => setCurrentSlide(2)}
-              ></li>
-              <li
-                className={currentSlide == 3 ? "active" : ""}
-                onClick={() => setCurrentSlide(3)}
-              ></li>
+              {slides.map((slide) => {
+                const id = slide.id - 1;
+                return (
+                  <li
+                    key={id}
+                    className={currentSlide == id ? "active" : ""}
+                    onClick={() => setCurrentSlide(id)}
+                  >
+                    {id + 1}
+                  </li>
+                );
+              })}
             </ul>
           </div>
           <button
             className="next"
-            disabled={currentSlide >= 3}
+            disabled={currentSlide >= slides.length - 1}
             onClick={() =>
               setCurrentSlide(
-                currentSlide < 3 ? currentSlide + 1 : currentSlide,
+                currentSlide < slides.length - 1
+                  ? currentSlide + 1
+                  : currentSlide,
               )
             }
           >
