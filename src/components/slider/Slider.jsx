@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./Slider.css";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 
-export default function Slider() {
+export default function Slider({ title, numberOfSlides }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [slides, setSlides] = useState([]);
 
@@ -10,7 +10,7 @@ export default function Slider() {
     async function getImages() {
       try {
         const res = await fetch(
-          "https://jsonplaceholder.typicode.com/photos?_limit=10",
+          `https://jsonplaceholder.typicode.com/photos?_limit=${numberOfSlides}`,
         );
         const data = await res.json();
         console.log(data);
@@ -25,6 +25,7 @@ export default function Slider() {
   return (
     <section className="sliderSec">
       <div className="container">
+        <h1 className="sliderTitle">{title}</h1>
         <div className="slider">
           <button
             className="prev"
@@ -65,7 +66,7 @@ export default function Slider() {
                 return (
                   <li
                     key={id}
-                    className={currentSlide == id ? "active" : ""}
+                    className={currentSlide == id && "active"}
                     onClick={() => setCurrentSlide(id)}
                   >
                     {id + 1}

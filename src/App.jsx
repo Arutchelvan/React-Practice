@@ -3,7 +3,7 @@ import Slider from "./components/slider/Slider";
 export default function App() {
   return (
     <>
-      <Slider />
+      <Slider title="Custom Slider" numberOfSlides={5} />
     </>
   );
 }

@@ -126,3 +126,8 @@ section .container {
     position: relative;
   }
 }
+.sliderTitle {
+  width: 100%;
+  text-align: center;
+  padding-top: 50px;
+}
